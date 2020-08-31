@@ -48,5 +48,48 @@ $(".saveBtn").on("click", function(){
     var rowIndex = parent.attr("data-list-id");
     // save time and text information to array
     savedCalInfo[rowIndex].text = textInput;
-    // console.log(savedCalInfo);
+    // save the changes
+    saveCalInfo();
 })
+
+// save the calendar info to local storage
+var saveCalInfo = function(){
+    localStorage.setItem("calInfo", JSON.stringify(savedCalInfo));
+}
+
+var loadCalInfo = function(){
+    savedCalInfo = JSON.parse(localStorage.getItem("calInfo"));
+    if (!savedCalInfo){
+        savedCalInfo = [
+            {time: "9am",
+            text: ""},
+            {time: "10am",
+            text: ""},
+            {time: "11am",
+            text: ""},
+            {time: "12pm",
+            text: ""},
+            {time: "1pm",
+            text: ""},
+            {time: "2pm",
+            text: ""},
+            {time: "3pm",
+            text: ""},
+            {time: "4pm",
+            text: ""},
+            {time: "5pm",
+            text: ""},
+        ]; 
+    }
+    // loop over each item in the array
+    $.each(savedCalInfo, function(index){
+        // get the time
+        var time = savedCalInfo[index].time;
+        // create a selector for the description div
+        var selector = "#" + time + "-text";
+        // set the text at that selector
+        $(selector).find("p").text(savedCalInfo[index].text);
+    })
+}
+
+loadCalInfo();
